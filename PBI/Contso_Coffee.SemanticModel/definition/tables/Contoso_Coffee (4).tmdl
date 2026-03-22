@@ -1,0 +1,72 @@
+table 'Contoso_Coffee (4)'
+	lineageTag: e1e395d0-60bc-4724-839e-22d80362e575
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 4bdf6797-529c-4d47-b06c-46cf2c7425fa
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: d7b66072-f4ac-4799-b9d9-61c9037c944e
+			defaultHierarchy: LocalDateTable_68addbe3-7126-44dd-bda6-4b0472687c6e.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Customer
+		dataType: string
+		lineageTag: 2c89fa5d-fa65-4ad1-b4a5-3360317af3ba
+		summarizeBy: none
+		sourceColumn: Customer
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product
+		dataType: string
+		lineageTag: 2268d3d0-b126-4278-8cf6-caab9a427cf3
+		summarizeBy: none
+		sourceColumn: Product
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantity
+		dataType: int64
+		formatString: 0
+		lineageTag: ff641ebf-db06-4d30-9701-23bb69bc9229
+		summarizeBy: sum
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column Price
+		dataType: double
+		lineageTag: 42cb38d5-4db7-4a1b-9da5-f3dd5cdcdcc9
+		summarizeBy: sum
+		sourceColumn: Price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Contoso_Coffee (4)' = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\LavJain\Desktop\PBI_Data\Contoso_Coffee.csv"),[Delimiter=",", Columns=5, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Date", type date}, {"Customer", type text}, {"Product", type text}, {"Quantity", Int64.Type}, {"Price", type number}}),
+				    #"Trimmed Text" = Table.TransformColumns(#"Changed Type",{{"Customer", Text.Trim, type text}}),
+				    #"Capitalized Each Word" = Table.TransformColumns(#"Trimmed Text",{{"Customer", Text.Proper, type text}}),
+				    #"Trimmed Text1" = Table.TransformColumns(#"Capitalized Each Word",{{"Product", Text.Trim, type text}}),
+				    #"Capitalized Each Word1" = Table.TransformColumns(#"Trimmed Text1",{{"Product", Text.Proper, type text}})
+				in
+				    #"Capitalized Each Word1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

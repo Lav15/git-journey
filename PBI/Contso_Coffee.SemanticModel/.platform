@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Contso_Coffee"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "749bd7e4-539a-46a3-af76-2c119881c4fb"
+  }
+}

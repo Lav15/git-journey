@@ -1,0 +1,5 @@
+relationship d7b66072-f4ac-4799-b9d9-61c9037c944e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Contoso_Coffee (4)'.Date
+	toColumn: LocalDateTable_68addbe3-7126-44dd-bda6-4b0472687c6e.Date
+
